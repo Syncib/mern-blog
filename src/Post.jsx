@@ -1,24 +1,26 @@
-import React from 'react'
-import dumimg from "./assets/images/blog-1.jpg";
-const Post = () => {
+import React from "react";
+import { format } from "date-fns";
+import { Link } from "react-router-dom";
+const Post = ({ title, summary, cover, content, createdAt, author,_id }) => {
   return (
     <div className="post">
-    <div className="image">
-      <img src={dumimg} alt="imge" />
+      <div className="image">
+        <Link to={`/post/${_id}`}>
+          <img src={"http://localhost:4000/" + cover} alt="imge" />
+        </Link>
+      </div>
+      <div className="texts">
+        <Link to={`/post/${_id}`}>
+          <h2>{title}</h2>
+        </Link>
+        <p className="info">
+          <a className="author">{author.username}</a>
+          <time>{format(new Date(createdAt), "MMM d, yyyy HH:mm")}</time>
+        </p>
+        <p className="summary">{summary}</p>
+      </div>
     </div>
-    <div className="texts">
-      <h2>Full-house battery backup coming later this year</h2>
-      <p className="info">
-        <a className="author">Saqib Abbas</a>
-        <time>2023-01-06 16:45</time>
-      </p>
-      <p className="summary">
-        It is a long established fact that a reader will be distracted by
-        the readable content of a page when looking at its layout.
-      </p>
-    </div>
-  </div>
-  )
-}
+  );
+};
 
-export default Post
+export default Post;
