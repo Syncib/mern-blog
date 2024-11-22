@@ -13,7 +13,7 @@ const PostPage = () => {
         setPostInfo(postInfo);
       });
     });
-  }, []);
+  }, [id]);
 
   if (!postInfo) return "";
 
