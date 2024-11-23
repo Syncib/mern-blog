@@ -13,6 +13,7 @@ const LoginPage = () => {
       const response = await fetch("https://blog-server-zeta-tan.vercel.app/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
+        mode: 'no-cors',
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });

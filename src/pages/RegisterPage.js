@@ -8,6 +8,7 @@ const RegisterPage = () => {
      const response = await fetch("https://blog-server-zeta-tan.vercel.app/register", {
       method: "POST",
       body: JSON.stringify({ username, password }),
+      mode: 'no-cors',
       headers: { "Content-Type": "application/json" },
     });
     if (response.status === 200) {

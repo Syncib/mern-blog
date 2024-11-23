@@ -34,6 +34,7 @@ const EditPost = () => {
     const response = await fetch("https://blog-server-zeta-tan.vercel.app/post", {
       method: "PUT",
       body: data,
+      mode: 'no-cors',
       credentials: "include",
     });
     if (response.ok) {
