@@ -5,7 +5,7 @@ import { UserContext } from "./UserContext";
 const Header = () => {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {
-    fetch("http://localhost:4000/profile", {
+    fetch("https://blog-server-zeta-tan.vercel.app/profile", {
       credentials: "include",
     }).then((response) => {
       response
@@ -20,7 +20,7 @@ const Header = () => {
   }, [setUserInfo]);
 
   const logout = () => {
-    fetch("http://localhost:4000/logout", {
+    fetch("https://blog-server-zeta-tan.vercel.app/logout", {
       credentials: "include",
       method: "POST",
     });
