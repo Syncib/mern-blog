@@ -4,27 +4,44 @@ import { UserContext } from "./UserContext";
 
 const Header = () => {
   const { setUserInfo, userInfo } = useContext(UserContext);
+
   useEffect(() => {
-    fetch("https://blog-server-zeta-tan.vercel.app/profile", {
-      credentials: "include",
-    }).then((response) => {
-      response
-        .json()
-        .then((userInfo) => {
-          setUserInfo(userInfo);
-        })
-        .catch((err) => {
-          console.log(err);
+    // Fetch the profile information from the backend
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("https://blog-server-zeta-tan.vercel.app/profile", {
+          credentials: "include",
         });
-    });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile");
+        }
+
+        const data = await response.json();
+        setUserInfo(data);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchProfile();
   }, [setUserInfo]);
 
-  const logout = () => {
-    fetch("https://blog-server-zeta-tan.vercel.app/logout", {
-      credentials: "include",
-      method: "POST",
-    });
-    setUserInfo(null);
+  const logout = async () => {
+    try {
+      const response = await fetch("https://blog-server-zeta-tan.vercel.app/logout", {
+        credentials: "include",
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to log out");
+      }
+
+      setUserInfo(null); // Clear the user info from context
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   const username = userInfo?.username;
@@ -35,13 +52,12 @@ const Header = () => {
         MyBlog
       </Link>
       <nav>
-        {username && (
+        {username ? (
           <>
-            <Link to="/create">Create new post </Link>
-            <a onClick={logout}>Logout</a>
+            <Link to="/create">Create new post</Link>
+            <a href="#!" onClick={logout}>Logout</a>
           </>
-        )}
-        {!username && (
+        ) : (
           <>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
