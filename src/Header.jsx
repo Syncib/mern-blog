@@ -1,63 +1,40 @@
-import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import {Link} from "react-router-dom";
+import {useContext, useEffect} from "react";
+import {UserContext} from "./UserContext";
 
-const Header = () => {
-  const { setUserInfo, userInfo } = useContext(UserContext);
-
+export default function Header() {
+  const {setUserInfo,userInfo} = useContext(UserContext);
   useEffect(() => {
-    // Fetch the profile information from the backend
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch("https://blog-server-zeta-tan.vercel.app/profile", {
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch profile");
-        }
-
-        const data = await response.json();
-        setUserInfo(data);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-
-    fetchProfile();
+    fetch('https://blog-server-dun.vercel.app/profile', {
+      credentials: 'include',
+    }).then(response => {
+      response.json().then(userInfo => {
+        setUserInfo(userInfo);
+      });
+    });
   }, [setUserInfo]);
 
-  const logout = async () => {
-    try {
-      const response = await fetch("https://blog-server-zeta-tan.vercel.app/logout", {
-        credentials: "include",
-        method: "POST",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to log out");
-      }
-
-      setUserInfo(null); // Clear the user info from context
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  function logout() {
+    fetch('https://blog-server-dun.vercel.app/logout', {
+      credentials: 'include',
+      method: 'POST',
+    });
+    setUserInfo(null);
+  }
 
   const username = userInfo?.username;
 
   return (
     <header>
-      <Link to="/" className="logo">
-        MyBlog
-      </Link>
+      <Link to="/" className="logo">MyBlog</Link>
       <nav>
-        {username ? (
+        {username && (
           <>
             <Link to="/create">Create new post</Link>
-            <a href="#!" onClick={logout}>Logout</a>
+            <a onClick={logout}>Logout ({username})</a>
           </>
-        ) : (
+        )}
+        {!username && (
           <>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
@@ -66,6 +43,4 @@ const Header = () => {
       </nav>
     </header>
   );
-};
-
-export default Header;
+}
